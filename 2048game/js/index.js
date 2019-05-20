@@ -148,7 +148,7 @@ function moveLeft(){
                         continue;
                     }else if(board[i][k]==board[i][j]&&noBlockHorizontal(i , k, j, board)){ //落脚的地方和和原来的数字相等&&中间没有障碍物
                         showMoveAnimation(i,j,i,k);
-                        board[]
+                        if()
                     }
                 }
             }
