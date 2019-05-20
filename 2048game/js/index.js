@@ -1,5 +1,5 @@
-var board = new Array();
-var add = new Array();
+var board = new Array(); //用来存放初始化的格子的数组
+var added = new Array(); //用来存放合并数字的数组
 var score = 0;
 var top = 240;
 
@@ -139,7 +139,19 @@ function moveLeft(){
     isAddedArray();
     for(var i=0;i<4;i++){
         for(var j=1;j<4;j++){ //第一列数字不能向左移动
-            
+            if(board[i][j]!=0){
+                for(var k=0;k<j;k++){ //i,j左侧的部位
+                    if(board[i][k]==0&&noBlockHorizontal(i , k, j, board)){ //落脚的地方为空&&中间没有障碍物
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]=board[i][k];
+                        board[i][j]=0;
+                        continue;
+                    }else if(board[i][k]==board[i][j]&&noBlockHorizontal(i , k, j, board)){ //落脚的地方和和原来的数字相等&&中间没有障碍物
+                        showMoveAnimation(i,j,i,k);
+                        board[]
+                    }
+                }
+            }
         }
     }
 }
