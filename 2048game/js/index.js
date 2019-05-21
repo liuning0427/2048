@@ -7,9 +7,9 @@ $(document).ready(function(e){
     newgame();
 });
 
-function newgame(){
+function newgame(){ //初始化棋盘
     init();
-    generateOneNumber();
+    generateOneNumber(); //随机生成两个数字
     generateOneNumber();
 }
 
@@ -17,10 +17,10 @@ function newgame(){
 function init(){
     score=0;
     document.getElementById("score").innerHTML = score;
-    $("gameover").css('display','none');
+    $("#gameover").css('display','none');
     for(var i=0;i<4;i++){
         for(var j=0;j<4;j++){
-            var gridCell = $("grid-cell"+i+"-"+j);
+            var gridCell = $("#grid-cell-"+i+"-"+j);
             gridCell.css("top",getPosTop(i,j));
             gridCell.css("left",getPosLeft(i,j));
         }
@@ -43,20 +43,23 @@ function init(){
 function updateBoardView(){ //更新数组前端的样式
     $(".number-cell").remove();
     for(var i=0;i<4;i++){
-        $("#box").append('<li class="grid-cell" id="grid-cell-'+i+'-'+j+'"></li>');
-        if(board[i][j]==0){
-            theNumberCell.css('width','0px');
-            theNumberCell.css('height','0px');
-            theNumberCell.css('top',getPosTop(i,j));
-            theNumberCell.css('left',getPosLeft(i,j));
-        }else{
-            theNumberCell.css('width','75px');
-            theNumberCell.css('height','75px');
-            theNumberCell.css('top',getPosTop(i,j));
-            theNumberCell.css('left',getPosLeft(i,j));
-            theNumberCell.css('background',getNumberBackgroundColor(board[i],[j]));//返回背景色
-            theNumberCell.css('background',getNumberColor(board[i],[j]));//返回前景色
-            theNumberCell.text(borad[i],[j]);
+        for(var j=0;j<4;j++){
+            $("#box").append('<div class="number-cell" id="number-cell-'+i+'-'+j+'"></div>');
+            var theNumberCell = $('#number-cell-'+i+'-'+j);
+            if(board[i][j]==0){
+                theNumberCell.css('width','0px');
+                theNumberCell.css('height','0px');
+                theNumberCell.css('top',getPosTop(i,j));
+                theNumberCell.css('left',getPosLeft(i,j));
+            }else{
+                theNumberCell.css('width','75px');
+                theNumberCell.css('height','75px');
+                theNumberCell.css('top',getPosTop(i,j));
+                theNumberCell.css('left',getPosLeft(i,j));
+                theNumberCell.css('background-color',getNumberBackgroundColor(board[i][j]));//返回背景色
+                theNumberCell.css('color',getNumberColor(board[i],[j]));//返回前景色
+                theNumberCell.text(board[i][j]);
+            }
         }
     }
 }
@@ -65,19 +68,19 @@ function generateOneNumber(){ //生成随机的格子
     if(nospace(board)){
         return false;
     }
-    var randX = parseInt(Math.floor(Math.random()*4)); //返回一个0到3之间的随机数
-    var randY = parseInt(Math.floor(Math.random()*4));
+    var randx = parseInt(Math.floor(Math.random()*4)); //返回一个0到3之间的随机数
+    var randy = parseInt(Math.floor(Math.random()*4));
     while(true){
         if(board[randX][randY]==0){ 
             break;
         }
-        var randX = parseInt(Math.floor(Math.random()*4)); 
-        var randY = parseInt(Math.floor(Math.random()*4));
+        var randx = parseInt(Math.floor(Math.random()*4)); 
+        var randy = parseInt(Math.floor(Math.random()*4));
         //如果随机生成的位置坐标为0，0，重新生成棋盘
     }
     var randNumber = Math.random() < 0.5? 2 : 4;//随机生成一个数字，如果生成的数字小于0.5，则返回2，否则返回4
-    board[randX][randY] = randNumber; 
-    showNumberWithAnimation(randX,randY,randNumber);//在随机生成的位置显示随机生成的数字；
+    board[randx][randy] = randNumber; 
+    showNumberWithAnimation(randx,randy,randNumber);//在随机生成的位置显示随机生成的数字；
     return true;
 }
 
@@ -91,7 +94,7 @@ $(document).keydown(function(event){
         }
         break;
         case 38:  //向上键；
-        if(moveTop()){
+        if(moveUp()){
             getScore(); 
             generateOneNumber(); 
             setTimeout('isGameOver()',300);
@@ -163,12 +166,13 @@ function moveLeft(){
         }
     }
     setTimeout("updateBoardView()",200);
+    return true; 
 }
 
 function moveRight(){
     if(!canMoveRight(board)) //判断格子是否能够向右移动；
         return false;
-    isaddedArray();
+    isAddedArray();
     for(var i=0;i<4;i++){
         for(var j=2;j>=0;j--){
             if(board[i][j]!=0){
@@ -202,7 +206,7 @@ function moveRight(){
 function moveUp(){
     if(!canMoveUp(board))
         return false;
-    isaddedArray();
+    isAddedArray();
     for(var j=0;j<4;j++){
         for(var i=1;i<4;i++){
             if(board[i][j]!=0){
@@ -237,7 +241,7 @@ function moveDown(){
     if(!canMoveDown(board))
         return false;
 
-    isaddedArray();
+    isAddedArray();
     for(var j=0;j<4;j++){
         for(var i=2;i>=9;i--){
             if(board[k][j]==0&&noBlockHorizontal(j,i,k,board)){
