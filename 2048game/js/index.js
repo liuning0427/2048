@@ -133,9 +133,8 @@ function isAddedArray(){ //把合并的数组置为0
 }
 
 function moveLeft(){
-    if(!canMoveLeft(board)){
+    if(!canMoveLeft(board))
         return false;
-    }
     isAddedArray();
     for(var i=0;i<4;i++){
         for(var j=1;j<4;j++){ //第一列数字不能向左移动
@@ -148,10 +147,119 @@ function moveLeft(){
                         continue;
                     }else if(board[i][k]==board[i][j]&&noBlockHorizontal(i , k, j, board)){ //落脚的地方和和原来的数字相等&&中间没有障碍物
                         showMoveAnimation(i,j,i,k);
-                        if()
+                        if(added[i][k]!=0){
+                            board[i][k+1]=board[i][j];
+                            board[i][j]=0;
+                        }else{
+                            board[i][k]+=board[i][j];;
+                            board[i][j]=0;
+                            added[i][k]=1;
+                            score+=board[i][k];
+                        }
+                        continue;
                     }
                 }
             }
         }
     }
+    setTimeout("updateBoardView()",200);
+}
+
+function moveRight(){
+    if(!canMoveRight(board)) //判断格子是否能够向右移动；
+        return false;
+    isaddedArray();
+    for(var i=0;i<4;i++){
+        for(var j=2;j>=0;j--){
+            if(board[i][j]!=0){
+                for(var k=3;k>j;k--){ //i,i右侧的元素
+                    if(board[i][k]==0&&noBlockHorizontal(i,j,k,board)){
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]=board[i][j];
+                        board[i][j]=0;
+                        continue;
+                    }else if(board[i][k]==board[i][j]&&noBlockHorizontal(i,j,k,board)){
+                        showMoveAnimation(i,j,i,k);
+                        if(added[i][k]!=0){
+                            board[i][k-1]=board[i][j];
+                            board[i][j]=0;
+                        }else{
+                            board[i][k]+=board[i][j];
+                            board[i][j]=0;
+                            added[i][k]=1;
+                            score+=board[i][k];
+                        }
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);
+    return true;
+}
+
+function moveUp(){
+    if(!canMoveUp(board))
+        return false;
+    isaddedArray();
+    for(var j=0;j<4;j++){
+        for(var i=1;i<4;i++){
+            if(board[i][j]!=0){
+                for(var k=0;k<i;k++){
+                    if(board[k][j]==0&&noBlockHorizontal(j,k,i,board)){
+                        showMoveAnimation(i,j,k,j);
+                        board[k][j]=board[i][j];
+                        board[i][j]=0;
+                        continue;
+                    }else if(board[k][j]==board[i][j]&&noBlockHorizontal(j,k,i,board)){
+                        showMoveAnimation(i,j,k,j);
+                        if(added[k][j]!=0){
+                            board[k+1][j]=board[i][j];
+                            board[i][j]=0;
+                        }else{
+                            board[k][j]+=board[i][j];
+                            board[i][j]=0;
+                            added[k][j]=1;
+                            score+=board[k][j];
+                        }
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);
+    return true;
+}
+
+function moveDown(){
+    if(!canMoveDown(board))
+        return false;
+
+    isaddedArray();
+    for(var j=0;j<4;j++){
+        for(var i=2;i>=9;i--){
+            if(board[k][j]==0&&noBlockHorizontal(j,i,k,board)){
+                showMoveAnimation(i,j,k,j);
+                board[k][j]=board[i][j];
+                board[i][j]=0;
+                continue;
+            }else if(board[k][j]==board[i][j]&&noBlockHorizontal(j,i,k,board)){
+                showMoveAnimation(i,j,k,j);
+                if(added[k][j]!=0){
+                    board[k-1][j]=board[i][j];
+                    board[i][j]=0;
+                }else{
+                    board[k][j]+=board[i][j];
+                    board[i][j]=0;
+                    added[k][j]=1;
+                    score += board[k][j];
+                }
+                continue;
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);
+    return true;
 }
