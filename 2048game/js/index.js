@@ -71,7 +71,7 @@ function generateOneNumber(){ //生成随机的格子
     var randx = parseInt(Math.floor(Math.random()*4)); //返回一个0到3之间的随机数
     var randy = parseInt(Math.floor(Math.random()*4));
     while(true){
-        if(board[randX][randY]==0){ 
+        if(board[randx][randy]==0){ 
             break;
         }
         var randx = parseInt(Math.floor(Math.random()*4)); 
